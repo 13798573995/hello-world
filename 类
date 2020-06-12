@@ -1,0 +1,19 @@
+类和类的实例
+
+#2.类的初始化
+
+class Dog(object):
+    def __init__(self):
+        print('Init the Dog')
+dog_obj=Dog()        
+        
+        
+#3.类的删除  python里面用一个__del__()来负责清理类的对象,
+
+class Dog(object):
+    def __init__(self):
+        print('Init the Dog')
+    def __del__(self):
+         print('Del the Dog')
+dog_obj=Dog()
+del dog_obj
