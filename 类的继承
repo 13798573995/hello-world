@@ -1,2 +1,202 @@
-# hello-world
-初学笔记
+流程:
+->新建一个汽车类
+->给汽车类添加属性和方法
+->增加一个电动汽车子类,继承汽车类
+->给电动车添加属性和方法,然后重载父类方法
+
+第一步:我们先创建一个car的类
+1)这个类需要存储一些汽车的信息列如:厂家，型号，年代等等
+2)需要有一个简单的方法来获得这些信息
+3)需要有一个方法说明这个是汽车是用汽油
+class Car():
+    def __init__(self,make,model,year):
+        self.make=make
+        self.model=model
+        self.year=year
+    def get_descriptive_name(self):
+        long_name=str(self.year)+''+self.make+''+self.model
+        return long_name.title()
+    def fill_gas_tank(self):
+        return 'this car need a gas tank!'
+my_new_car=Car('audi','a4',2016)
+print(my_new_car.make,my_new_car.model,my_new_car.year)
+a=my_new_car.get_descriptive_name()
+print(a)
+b=my_new_car.fill_gas_tank()
+print(b)
+
+
+
+
+是不是有点简单，我们再给汽车添加点东西
+增加一个里程数信息
+增加读里程数的方法
+更新里程数的方法
+
+class Car():
+    def __init__(self,make,model,year):
+        self.make=make
+        self.model=model
+        self.year=year
+        self.odomegter_reading=0
+    def get_descriptive_name(self):
+        long_name=str(self.year)+''+self.make+''+self.model
+        return long_name
+    def fill_gas_tank(self):
+        return 'this car need a gas tank !'
+    def read_odometer(self):
+        print('this car has '+str(self.odomegter_reading)+' miles on it ')
+    def update_odometer(self,mileage):
+        if mileage>=self.odomegter_reading:
+            self.odomegter_reading=mileage
+        else:
+            print('you car not roll back an odometer !')
+            
+my_new_car=Car('audi','a4',2016)
+print(my_new_car.get_descriptive_name())
+
+my_new_car.update_odometer(100)
+
+print(my_new_car.read_odometer())
+
+
+第二步：增加一个电动汽车子类
+我们增加一个电动汽车的类ElectricCar,因为电动汽车也是汽车的一种，
+所以我们会继承car类,注意子类初始化有两种方法
+
+1)先看第一种:若父类Car是经典类,子类的初始化的时候,用传统的调用直接用父类调用__init__()
+
+class Car():
+    def __init__(self,make,model,year):
+        self.make=make
+        self.model=model
+        self.year=year
+        self.odomegter_reading=0
+    def get_descriptive_name(self):
+        long_name=str(self.year)+' '+self.make+' '+self.model
+        return long_name
+    def fill_gas_tank(self):
+        return 'this car need a gas tank !'
+    def read_odometer(self):
+        print('this car has '+str(self.odomegter_reading)+' miles on it ')
+    def update_odometer(self,mileage):
+        if mileage>=self.odomegter_reading:
+            self.odomegter_reading=mileage
+        else:
+            print('you car not roll back an odometer !')
+            
+class ElectriCar(Car):
+    def __init__(self,make,model,year):
+        Car.__init__(self,make,model,year)
+        
+my_tesla=ElectriCar('tesla','model s',2016)
+print(my_tesla.get_descriptive_name())
+
+
+2)再看第二种:若父类Car是新式类(就是父类继承object类),子类的初始化的时候
+除了直接用父类调用__init__()，还可以用super这个关键字
+super()会带两个参数，第一个是子类的类名，第二个是self参数.
+
+
+class Car():
+    def __init__(self,make,model,year):
+        self.make=make
+        self.model=model
+        self.year=year
+        self.odomegter_reading=0
+    def get_descriptive_name(self):
+        long_name=str(self.year)+' '+self.make+' '+self.model
+        return long_name
+    def fill_gas_tank(self):
+        return 'this car need a gas tank !'
+    def read_odometer(self):
+        print('this car has '+str(self.odomegter_reading)+' miles on it ')
+    def update_odometer(self,mileage):
+        if mileage>=self.odomegter_reading:
+            self.odomegter_reading=mileage
+        else:
+            print('you car not roll back an odometer !')
+            
+class ElectriCar(Car):
+    def __init__(self,make,model,year):
+        super(ElectriCar,self).__init__(make,model,year)
+my_tesla=ElectriCar('tesla','model s',2016)
+print(my_tesla.get_descriptive_name())
+
+
+
+第三步：添加子类特有属性
+那么我们子类是不是应该有自己的特有属性和方法的，好我们加点东西
+添加电池容量的变量
+获取电池容量的方法
+
+
+class Car():
+    def __init__(self,make,model,year):
+        self.make=make
+        self.model=model
+        self.year=year
+        self.odomegter_reading=0
+    def get_descriptive_name(self):
+        long_name=str(self.year)+' '+self.make+' '+self.model
+        return long_name
+    def fill_gas_tank(self):
+        return 'this car need a gas tank !'
+    def read_odometer(self):
+        print('this car has '+str(self.odomegter_reading)+' miles on it ')
+    def update_odometer(self,mileage):
+        if mileage>=self.odomegter_reading:
+            self.odomegter_reading=mileage
+        else:
+            print('you car not roll back an odometer !')
+class ElectricCar(Car):
+    def __init__(self,make,model,year):
+        Car.__init__(self,make,model,year)
+        self.battery_size=0
+    def describe_battery(self,battery):
+        self.battery_size=battery
+        print('this car has a '+str(self.battery_size)+' kwh battery')
+my_tesl=ElectricCar('tesla','model s',2016)
+print(my_tesl.get_descriptive_name())
+print(my_tesl.describe_battery(90))
+print(my_tesl.fill_gas_tank())
+
+第四步:类方法的重载
+如果我们子类有一个名字和父类一样的方法，Python会自动判断对象的类型去调用对应的方法.
+比如我们子类里面也有一个叫fill_gas_tank的方法,会怎么样呢:
+
+class Car():
+    def __init__(self,make,model,year):
+        self.make=make
+        self.model=model
+        self.year=year
+        self.odomegter_reading=0
+    def get_descriptive_name(self):
+        long_name=str(self.year)+' '+self.make+' '+self.model
+        return long_name
+    def fill_gas_tank(self):
+        return 'this car need a gas tank !'
+    def read_odometer(self):
+        print('this car has '+str(self.odomegter_reading)+' miles on it ')
+    def update_odometer(self,mileage):
+        if mileage>=self.odomegter_reading:
+            self.odomegter_reading=mileage
+        else:
+            print('you car not roll back an odometer !')  
+            
+class ElectricCar(Car):
+    def __init__(self,make,model,year):
+        Car.__init__(self,make,model,year)
+        self.battery_size=0
+    def describe_battery(self,battery):
+        self.battery_size=battery
+        print('this car has a '+str(self.battery_size)+' kwh battery')
+    def fill_gas_tank(self):
+        return ' this car does not need a gas tank !'
+    
+s1=Car('audi','a4',2016)   
+my_tesla=ElectricCar('tesla','model s',2016)
+print(my_tesla.get_descriptive_name())
+print(my_tesla.describe_battery(60))
+print(my_tesla.fill_gas_tank())
+print(s1.fill_gas_tank())
